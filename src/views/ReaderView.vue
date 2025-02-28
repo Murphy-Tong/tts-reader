@@ -136,23 +136,38 @@ const handleSettingsUpdate = () => {
   showSettings.value = false
 }
 
+const contentRef = ref<HTMLElement | null>(null)
+const pageContentRef = ref<HTMLElement | null>(null)
+
 // 计算每页可显示的行数
 const calculatePageLayout = () => {
-  const containerHeight = window.innerHeight - 160 // 减去工具栏、页码和边距的高度
-  const lineHeight = fontSize.value * 1.6 // 行高
-  const paragraphSpacing = fontSize.value * 0.8 // 段间距
+  const containerHeight = window.innerHeight - 160 // 减去工具栏、页码等固定高度
+  const contentPadding = 40 // content padding (20px * 2)
+  const pageContentPadding = 40 // page-content padding (20px * 2)
+  const marginBottom = 40 // page-content margin-bottom
+  const availableHeight = containerHeight - contentPadding - pageContentPadding - marginBottom
+  
+  const lineHeight = fontSize.value * 1.6
+  const paragraphSpacing = fontSize.value * 0.8
   
   return {
-    containerHeight,
+    containerHeight: availableHeight,
     lineHeight,
     paragraphSpacing,
-    maxLines: Math.floor(containerHeight / lineHeight)
+    maxLines: Math.floor(availableHeight / lineHeight)
   }
 }
 
 // 计算段落占用的行数
 const calculateParagraphLines = (text: string) => {
-  const charsPerLine = Math.floor(780 / fontSize.value * 1.8) // 假设容器宽度为 800px，减去左右padding
+  const contentPadding = 40 // content padding (20px * 2)
+  const pageContentPadding = 40 // page-content padding (20px * 2)
+  const maxWidth = Math.min(800, window.innerWidth) // 考虑小屏幕设备
+  const availableWidth = maxWidth - contentPadding - pageContentPadding
+  
+  // 使用更准确的字符宽度估算
+  const averageCharWidth = fontSize.value * 0.6 // 假设平均字符宽度为字体大小的 0.6 倍
+  const charsPerLine = Math.floor(availableWidth / averageCharWidth)
   return Math.ceil(text.length / charsPerLine)
 }
 
@@ -170,7 +185,9 @@ const pages = computed(() => {
     // 检查最后一段是否超出容器
     while (currentPageLines > maxLines && currentPageContent.length > 0) {
       const lastParagraph = currentPageContent[currentPageContent.length - 1]
-      const charsPerLine = Math.floor(780 / fontSize.value * 1.8)
+      const averageCharWidth = fontSize.value * 0.6
+      const availableWidth = Math.min(800, window.innerWidth) - 80 // 减去所有 padding
+      const charsPerLine = Math.floor(availableWidth / averageCharWidth)
       
       // 如果最后一段超过一行，将最后一行移到下一页
       if (lastParagraph.length > charsPerLine) {
@@ -498,8 +515,8 @@ onUnmounted(() => {
     @touchend="handleTouchEnd"
     :data-theme="isDarkTheme ? 'dark' : 'light'"
   >
-    <div class="content">
-      <div class="page-content">
+    <div class="content" ref="contentRef">
+      <div class="page-content" ref="pageContentRef">
         <p
           v-for="(paragraph, index) in currentPageContent"
           :key="index"
