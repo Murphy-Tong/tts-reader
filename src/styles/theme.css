@@ -1,0 +1,136 @@
+:root {
+  /* Material Design 3 颜色 - 亮色主题 */
+  --md3-sys-color-primary: #006495;
+  --md3-sys-color-on-primary: #ffffff;
+  --md3-sys-color-primary-container: #cde5ff;
+  --md3-sys-color-on-primary-container: #001e31;
+  --md3-sys-color-surface: #fafcff;
+  --md3-sys-color-on-surface: #001f2a;
+  --md3-sys-color-surface-variant: #dce4e9;
+  --md3-sys-color-outline: #70787d;
+  --md3-sys-color-surface-container: #edf0f3;
+  --md3-sys-color-surface-container-low: #f3f6f9;
+  --md3-sys-color-surface-container-high: #e7eaed;
+  
+  /* 布局 */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 20px;
+  --spacing-xl: 30px;
+  
+  /* 字体 */
+  --font-size-sm: 14px;
+  --font-size-md: 16px;
+  --font-size-lg: 18px;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  
+  /* 圆角 */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-full: 9999px;
+  
+  /* 阴影 */
+  --md3-elevation-1: 0 1px 2px rgba(0,0,0,0.3);
+  --md3-elevation-2: 0 1px 2px rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15);
+  --md3-elevation-3: 0 1px 3px rgba(0,0,0,0.3), 0 4px 8px 3px rgba(0,0,0,0.15);
+  
+  /* 动画 */
+  --transition-speed: 0.3s;
+}
+
+/* 全局基础样式 */
+body {
+  background-color: var(--md3-sys-color-surface);
+  color: var(--md3-sys-color-on-surface);
+  font-family: system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* 滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--md3-sys-color-surface-variant);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--md3-sys-color-primary);
+  border-radius: var(--border-radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--md3-sys-color-primary);
+  opacity: 0.8;
+}
+
+/* 暗色主题 */
+[data-theme="dark"] {
+  --md3-sys-color-primary: #91ccff;
+  --md3-sys-color-on-primary: #003351;
+  --md3-sys-color-primary-container: #004b73;
+  --md3-sys-color-on-primary-container: #cde5ff;
+  --md3-sys-color-surface: #001f2a;
+  --md3-sys-color-on-surface: #bfe9ff;
+  --md3-sys-color-surface-variant: #41484d;
+  --md3-sys-color-outline: #8a9297;
+  --md3-sys-color-surface-container: #1a2428;
+  --md3-sys-color-surface-container-low: #151f23;
+  --md3-sys-color-surface-container-high: #1f292d;
+}
+
+/* 全局播放控制按钮 */
+.global-play-button {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--md3-sys-color-primary);
+  color: var(--md3-sys-color-on-primary);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--md3-elevation-2);
+  transition: all var(--transition-speed);
+  z-index: 1000;
+}
+
+.global-play-button:hover {
+  box-shadow: var(--md3-elevation-3);
+  transform: scale(1.05);
+}
+
+.global-play-button .material-icons {
+  font-size: 24px;
+}
+
+/* 底部工具栏 */
+.bottom-toolbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: var(--md3-sys-color-surface-container);
+  padding: var(--spacing-md);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--md3-elevation-2);
+  transform: translateY(100%);
+  transition: transform var(--transition-speed);
+  z-index: 999;
+}
+
+.bottom-toolbar.show {
+  transform: translateY(0);
+} 
